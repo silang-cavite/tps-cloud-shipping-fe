@@ -8,7 +8,7 @@ const UnprotectedRoutes = ({ auth, component: Component, ...rest }) => {
       render={()=>(
         !auth ? 
         <Component />
-        : <Redirect to="/dashboard" />
+        : <Redirect to="/dashboard/" />
       )}
       />
     )

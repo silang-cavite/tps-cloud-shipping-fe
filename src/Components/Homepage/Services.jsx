@@ -1,11 +1,11 @@
 import React from 'react'
 
-const NotFound = () => {
+const Services = () => {
     return (
         <div>
-            Page not found
+            Services
         </div>
     )
 }
 
-export default NotFound
+export default Services

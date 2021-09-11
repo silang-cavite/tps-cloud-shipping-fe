@@ -1,11 +1,11 @@
 import React from 'react'
 
-const NotFound = () => {
+const QueueList = () => {
     return (
         <div>
-            Page not found
+            QueueList
         </div>
     )
 }
 
-export default NotFound
+export default QueueList

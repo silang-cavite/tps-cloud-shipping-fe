@@ -1,11 +1,11 @@
 import React from 'react'
 
-const NotFound = () => {
+const Partner = () => {
     return (
         <div>
-            Page not found
+            partner api
         </div>
     )
 }
 
-export default NotFound
+export default Partner

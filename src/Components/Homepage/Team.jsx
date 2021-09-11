@@ -1,11 +1,11 @@
 import React from 'react'
 
-const NotFound = () => {
+const Team = () => {
     return (
         <div>
-            Page not found
+            About the team
         </div>
     )
 }
 
-export default NotFound
+export default Team
