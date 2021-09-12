@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-// import exampleReducer from './Authorization/Auth';
+import userInformation from './UserInformation/UserData';
 
 const reducer = configureStore({
   reducer: {
-    // example: exampleReducer
+    user: userInformation
   }
 })
 

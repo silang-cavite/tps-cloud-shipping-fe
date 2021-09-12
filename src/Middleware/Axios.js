@@ -1,6 +1,12 @@
 import Axios from "axios";
-import env from "react-dotenv";
 
 export const axiosAPI = Axios.create({
-    baseURL: `${env.API_URL}`
+    baseURL: process.env.REACT_APP_API_URL
+});
+
+export const axiosAPIHeader = Axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+    headers: { 
+        "Authorization": `Bearer ${localStorage.getItem("Authorization")}` 
+    },
 });

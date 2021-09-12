@@ -6,6 +6,7 @@ const DashboardLogout = () => {
 
     useEffect(()=>{
         Auth.setAuth(false)
+        localStorage.removeItem("Authorization")
     // eslint-disable-next-line
     }, [])
 
