@@ -23,11 +23,6 @@ The Frontend/Client side of the project is created with:
 * [Redux Toolkit](https://www.npmjs.com/package/@reduxjs/toolkit)
 * [React](https://reactjs.org/docs/create-a-new-react-app.html)
 
-## Prerequisite
-Install the following:
-* [node.js](https://nodejs.org/en/)
-* [yarn](https://classic.yarnpkg.com/en/docs/)
-
 ## User Workflows
 * [Client](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
 <p align="center">
@@ -57,13 +52,21 @@ Collection Schemas:
 * [Shipping_Products_List](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
 * [Product](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
 
-## Unified Model Language
+<p align="center">
+    <img src="./src/Assets/Cloud Shipping.png" width="80%">
+</p>
 
+## Unified Model Language
 
 <p align="center">
     <img src="./src/Assets/uml1.png" width="40%">
     <img src="./src/Assets/uml2.png" width="40%">
 </p>
+
+## Prerequisite
+Install the following:
+* [node.js](https://nodejs.org/en/)
+* [yarn](https://classic.yarnpkg.com/en/docs/)
 
 Clone the repository
 ```
@@ -83,7 +86,10 @@ cd tps_cloud_shipping_fe && yarn start
 
 
 ## Live Deployment
-Frontend/Client side
+FrontEnd/Client side
 ```
 https://cloud-shipping.netlify.app/
+BackEnd/Server side
+```
+https://cloud-shipping.heroku.app/
 ```

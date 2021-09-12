@@ -6,8 +6,8 @@ import { useMediaQuery } from "react-responsive";
 import "./App.scss"
 
 const Apps = () => {
-    const [auth, setAuth] = useState(true);
-    const [slidingPanel, setSlidingPanel] = useState(true);
+    const [auth, setAuth] = useState(false);
+    const [slidingPanel, setSlidingPanel] = useState(false);
     const [ toasterPosition, setToasterPosition ] = useState(true)
     const changeToasterPosition = useMediaQuery({
       query: "(max-width: 800px)"
