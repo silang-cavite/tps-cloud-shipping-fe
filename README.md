@@ -20,8 +20,17 @@ Cloud Shipping provides services that fulfills individuals, business owners, and
 
 ## Technologies
 The Frontend/Client side of the project is created with:
+* [Axios](https://www.npmjs.com/package/axios)
+* [JWT](https://www.npmjs.com/package/jsonwebtoken)
+* [Kutty](https://www.npmjs.com/package/kutty)
+* [Moment](https://www.npmjs.com/package/moment)
+* [React-Hot-Toast](https://www.npmjs.com/package/react-hot-toast)
+* [React-Responsive](https://www.npmjs.com/package/react-hot-toast)
+* [React-Sliding-Side-Panel](https://www.npmjs.com/package/react-hot-toast)
+* [Redux](https://www.npmjs.com/package/@reduxjs/toolkit)
 * [Redux Toolkit](https://www.npmjs.com/package/@reduxjs/toolkit)
 * [React](https://reactjs.org/docs/create-a-new-react-app.html)
+* [Tailwind CSS](https://reactjs.org/docs/create-a-new-react-app.html)
 
 ## User Workflows
 * [Client](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
@@ -89,6 +98,8 @@ cd tps_cloud_shipping_fe && yarn start
 FrontEnd/Client side
 ```
 https://cloud-shipping.netlify.app/
+```
+
 BackEnd/Server side
 ```
 https://cloud-shipping.heroku.app/
