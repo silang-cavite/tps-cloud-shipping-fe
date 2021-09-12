@@ -5,12 +5,17 @@
   "dependencies": {
     "@craco/craco": "^6.3.0",
     "@reduxjs/toolkit": "^1.6.1",
+    "@tailwindcss/aspect-ratio": "^0.2.1",
+    "@tailwindcss/forms": "^0.3.3",
+    "@tailwindcss/line-clamp": "^0.2.1",
     "@tailwindcss/postcss7-compat": "^2.2.14",
+    "@tailwindcss/typography": "^0.4.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "autoprefixer": "^9",
     "axios": "^0.21.1",
+    "daisyui": "^1.14.0",
     "jsonwebtoken": "^8.5.1",
     "kutty": "^0.5.2",
     "moment": "^2.29.1",
@@ -29,9 +34,9 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-dotenv && craco start",
-    "build": "react-dotenv && craco build",
-    "test": "react-dotenv && craco test"
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test"
   },
   "eslintConfig": {
     "extends": [

@@ -7,7 +7,6 @@ import { useMediaQuery } from "react-responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { notify } from "src/Services/Toaster";
 import { signIn } from "src/State/UserInformation/UserData";
-import "./App.scss"
 
 const Apps = () => {
     const dispatch = useDispatch();
@@ -41,6 +40,7 @@ const Apps = () => {
                     role: decodedData.role
                 }))
                 setAuth(true)
+                notify(`Welcome ${decodedData.first_name} ${decodedData.last_name}`, "success")  
             }
         } catch (err) {
             err.response ? notify(err.response.data.message, "success") : notify(err.message, "success")  

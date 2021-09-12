@@ -8,10 +8,10 @@ import "./SlidingPanel.scss";
 
 const DashboardLayout = (props) => {
     const Auth = useContext(ContextAPI)
-    const [ sideBar, setSideBar ] = useState(true)
     const disableSideBar = useMediaQuery({
       query: "(max-width: 800px)"
     });
+    const [ sideBar, setSideBar ] = useState(disableSideBar === true ? false : true)
 
     const slidingPanelBackdropClicked = () => {
         Auth.setSlidingPanel(!Auth.slidingPanel)
@@ -32,7 +32,9 @@ const DashboardLayout = (props) => {
                 }
                 <div className="bg-red-300 min-h-screen flex-grow">
                     <NavigationHeader/>
-                    {props.children}
+                    <div className="m-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+                        {props.children}
+                    </div>
                 </div>
             </div>
         </div>
