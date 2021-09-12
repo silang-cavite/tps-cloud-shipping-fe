@@ -2,8 +2,8 @@
 Transforming the Shipping and Business Industry for the Next Generation
 
 <p align="center">
-    <img src="./assets/pwa4.png" width="40%">
-    <img src="./assets/pwa3.png" width="40%">
+    <img src="./src/Assets/pwa4.png" width="40%">
+    <img src="./src/Assets/pwa3.png" width="40%">
 </p>
 
 ## Table of Contents
@@ -27,6 +27,43 @@ The Frontend/Client side of the project is created with:
 Install the following:
 * [node.js](https://nodejs.org/en/)
 * [yarn](https://classic.yarnpkg.com/en/docs/)
+
+## User Workflows
+* [Client](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+<p align="center">
+    <img src="./src/Assets/Client.png" width="80%">
+</p>
+
+* [Delivery Partner](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+<p align="center">
+    <img src="./src/Assets/Delivery Partner.png" width="80%">
+</p>
+
+* [External Users](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+<p align="center">
+    <img src="./src/Assets/External Project.png" width="80%">
+</p>
+
+## Entity Relationship Diagram
+Collection Schemas:
+* [Client](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+* [Delivery_Partner](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+* [Business_Partner](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+* [Address](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+* [Vehicles](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+* [Shipping_Transaction_User_Information](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+* [Shipping_Transaction](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+* [Shipping_Status](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+* [Shipping_Products_List](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+* [Product](https://github.com/Klylylydeee/tps_cloud_shipping_fe)
+
+## Unified Model Language
+
+
+<p align="center">
+    <img src="./src/Assets/uml1.png" width="40%">
+    <img src="./src/Assets/uml2.png" width="40%">
+</p>
 
 Clone the repository
 ```

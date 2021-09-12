@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 const NavigationSideBar = () => {
 
     return (
-        <div style={{ width: "30%" }}>
-            <div style={{ position: "fixed" }}>
+        <div className="w-full bg-gray-400" style={{ maxWidth: "250px" }}>
+            <div className="fixed">
                 {
                     SidebarItems.map((item, index) => {
                         return (
