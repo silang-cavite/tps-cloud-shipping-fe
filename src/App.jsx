@@ -43,6 +43,7 @@ const Apps = () => {
                 notify(`Welcome ${decodedData.first_name} ${decodedData.last_name}`, "success")  
             }
         } catch (err) {
+            localStorage.removeItem("Authorization")
             err.response ? notify(err.response.data.message, "success") : notify(err.message, "success")  
         }
     // eslint-disable-next-line
