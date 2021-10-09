@@ -1,6 +1,7 @@
 // NPM Modules
 import React, { useState, useEffect } from "react";
 import ReactMapGL, {Source, Layer} from "react-map-gl";
+import mapboxgl from 'mapbox-gl';
 import DataTableExtensions from "react-data-table-component-extensions";
 import ReactTooltip from "react-tooltip";
 import DataTable from "react-data-table-component-with-filter";
@@ -236,5 +237,7 @@ const TransactionHistory = () => {
 
 // Framer Motion Higher Order Component (HOC)
 const FrameHistory = Motion(TransactionHistory);
+// eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 export default FrameHistory;
