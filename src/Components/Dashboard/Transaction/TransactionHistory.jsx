@@ -95,7 +95,6 @@ const TransactionHistory = () => {
             sortable: true,
             maxWidth: "50px",
 			cell: function OrderItems(currentRowData) {
-                console.log(currentRowData)
 				return (
                     <p data-tip={`${currentRowData._id}`}>
                         { currentRowData._id }
@@ -190,10 +189,10 @@ const TransactionHistory = () => {
         <div>
             {
                 loader === true ?
-                <div className="flex flex-col justify-center items-center bg-red-400" style={{ minHeight: "64vh" }}>
+                <div className="flex flex-col justify-center items-center" style={{ minHeight: "64vh" }}>
                     <Ring
                         type="Puff"
-                        color="#00BFFF"
+                        color="#0ABAB5"
                         height={100}
                         width={100}
                     />
@@ -218,9 +217,11 @@ const TransactionHistory = () => {
                     </div>
                     <div className="overflow-y-auto">
                         <ReactMapGL
-                            mapboxApiAccessToken={`pk.eyJ1Ijoia2x5bHlseWRlZWUiLCJhIjoiY2tsb3c4bHoyMDl0MDJxbXh5ZzZ3dWR6OSJ9.hp2Au5hK2f-qbtuHSslxGA`}
+                            mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_GL_KEY}
                             {...viewport}
                             onViewportChange={nextViewport => setViewport(nextViewport)}
+                            className="rounded-md"
+                            mapStyle={process.env.REACT_APP_MAP_STYLE}
                         >
                             <Source id="my-data" type="geojson" data={geojson}>
                                 <Layer {...layerStyle} />

@@ -21,7 +21,7 @@ const NavigationFooter = () => {
 
     const FooterInformation = () => {
         return (
-            <div className="flex flex-row items-center">
+            <div className="flex flex-row items-center font-medium">
                 Cloud Shipping Version { process.env.REACT_APP_TPS_VERSION }
             </div>
         )
@@ -31,7 +31,7 @@ const NavigationFooter = () => {
     const FrameUserInformation = Motion(FooterInformation, loaded);
 
     return (
-        <div className="min-h-navigation max-h-navigation bg-tiffany-30 flex flex-row justify-between px-5 shadow-lg absolute bottom-0 min-w-full">
+        <div className="min-h-navigation max-h-navigation bg-tiffany-30 flex flex-row justify-between px-5 shadow-lgabove absolute bottom-0 min-w-full">
             <div className="flex flex-row items-center">
             </div>
             <div className="flex flex-row items-center">

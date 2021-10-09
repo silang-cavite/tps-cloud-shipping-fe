@@ -52,6 +52,9 @@ module.exports = {
             fontFamily: {
                 montserrat: ["Montserrat"],
             },
+            boxShadow: {
+                lgabove: '2px -5px 5px 0px rgba(0, 0, 0, 0.1)',
+            }
         },
     },
     variants: {

@@ -12,6 +12,7 @@ import SidebarItems from "src/Routes/Dashboard/SidebarItems";
 
 // Assets
 import backgroundImage from "src/Assets/sidebar-background.jpg";
+import logoImage from "src/Assets/Desktop - 1.png";
 
 const NavigationSideBar = () => {
     // Component Initial Variables
@@ -32,9 +33,9 @@ const NavigationSideBar = () => {
 
     const SideBarContents = () => {
         return (
-            <div className="min-w-full flex flex-col" style={{ minHeight: "100vh" }}>
-            <div className="relative">
-                testeraaa
+            <div className="min-w-full flex flex-col text-white" style={{ minHeight: "100vh" }}>
+            <div className="relative flex justify-center py-2">
+                <img src={logoImage} alt="" style={{ maxHeight: "70px", maxWidth: "105px" }}/>
             </div>
             {
                 SidebarItems.map((item, index) => {
@@ -44,7 +45,7 @@ const NavigationSideBar = () => {
                     return checkIfRoleExists ? 
                         (
                             <Link to={item.route} key={index} className={`${item.class} ml-5 my-1 relative`}>
-                                <NavLink activeClassName="bg-tiffany-30 current-navigation" to={item.route} exact key={item.name} className="flex py-2 rounded-full tester">
+                                <NavLink activeClassName="bg-tiffany-30 current-navigation text-black" to={item.route} exact key={item.name} className="flex py-2 rounded-full tester">
                                     <p className="mx-5"> { item.icon } </p>
                                     <NavLink activeClassName="font-semibold" to={item.route} exact> { item.name } </NavLink>
                                 </NavLink>
@@ -68,10 +69,10 @@ const NavigationSideBar = () => {
                 maxHeight: "100vh",
                 backgroundImage: `url(${backgroundImage})`,
                 backgroundPosition: "-50% 30%",
-                backgroundColor: "#0ABAB5",
+                backgroundColor: "rgb(10, 186, 181)",
                 backgroundBlendMode: "multiply"
         }}>
-            <div className="block absolute min-h-full" style={{ minWidth: "100%", background: 'linear-gradient(350deg, rgba(255,255,255,0.25) 1%, rgba(54,25,153,1) 73%, rgba(54,25,153,1) 100%)' }}/>
+            <div className="block absolute min-h-full" style={{ minWidth: "100%", background: 'linear-gradient(360deg, rgba(54,25,153,0.65) 0%, rgba(54,25,153,1) 62%)' }}/>
             <FrameSideBarContents />
         </div>
     )

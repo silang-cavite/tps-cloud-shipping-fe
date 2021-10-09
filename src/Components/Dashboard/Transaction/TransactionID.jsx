@@ -117,7 +117,7 @@ const TransactionID = () => {
                     <div className="flex flex-col justify-center items-center" style={{ minHeight: "75vh" }}>
                         <Ring
                             type="Puff"
-                            color="#00BFFF"
+                            color="#0ABAB5"
                             height={100}
                             width={100}
                         />

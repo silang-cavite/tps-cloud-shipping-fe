@@ -32,7 +32,7 @@ const DashboardLayout = (props) => {
     
     return (
         <div>
-            <div className="flex">
+            <div className="flex bg-tiffany-30">
                 {
                     // Conditionall render the side navigation bar depending on the breakpoint
                     // !sideBar is for the Desktop ViewPort

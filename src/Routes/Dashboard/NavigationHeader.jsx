@@ -15,6 +15,7 @@ const NavigationHeader = () => {
     const Auth = useContext(ContextAPI);                                        // Context API Variable from Parent to check current Authorization Status
     const location = useLocation();                                             // Router Location 
     const [ loaded, setLoaded ] = useState(true);                               // Loader for Framer to set the trigger animation only once
+    const [ pathName, setPathName ] = useState("")
 
     // Redux State
     const {                                                                     // Logged/Current User's UUID
@@ -31,6 +32,7 @@ const NavigationHeader = () => {
         if(location.pathname !== "/dashboard/"){
             setLoaded(false)
         }
+        setPathName(`${location.pathname.split("/")[2]}`)
     // eslint-disable-next-line
     }, [location.pathname])
 
@@ -57,6 +59,19 @@ const NavigationHeader = () => {
             <div className="flex flex-row items-center">
                 <div className="block md:hidden">
                     <Icon icon={menu} size={25} onClick={ () => { openSidePanelIfMobile() } }/>
+                </div>
+                <div className="hidden md:block">
+                    <p className="font-medium">
+                        Dashboard { 
+                        pathName !== "" ?
+                            <span>
+                                <span>/ </span>
+                                <span>{ pathName.charAt(0).toUpperCase() +  pathName.slice(1) }</span>
+                            </span>
+                            :
+                            ""
+                        }
+                    </p>
                 </div>
             </div>
             <div className="flex flex-row items-center">
