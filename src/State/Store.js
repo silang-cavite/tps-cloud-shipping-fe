@@ -1,11 +1,14 @@
+// NPM Modules
 import { configureStore } from "@reduxjs/toolkit";
 
-import userInformation from './UserInformation/UserData';
+// Reducers
+import userInformation from 'src/State/UserInformation/UserData';
+
 
 const reducer = configureStore({
-  reducer: {
-    user: userInformation
-  }
+    reducer: {
+        user: userInformation
+    }
 })
 
 export default reducer;

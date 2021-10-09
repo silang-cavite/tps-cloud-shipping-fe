@@ -1,11 +1,26 @@
-import React from "react"
+// NPM Modules
+import React from "react";
+import { useHistory } from "react-router-dom";
+
+// Moduled Functions
+import Motion from "src/Middleware/MotionVertically";
+import SwiperSlider from "src/Components/Dashboard/Components/SwiperSlider";
 
 const ClientDashboard = () => {
+    // Component Initial Variables
+    const history = useHistory();                                               // Navigation to react routes
+
     return (
         <div>
-            ClientDashboard
+            <button onClick={() => {
+                history.push("/dashboard/transaction/create")
+            }}>Create Transaction</button>
+            <SwiperSlider />
         </div>
     )
 }
 
-export default ClientDashboard
+// Framer Motion Higher Order Component (HOC)
+const FrameClientDashboard = Motion(ClientDashboard);
+
+export default FrameClientDashboard;

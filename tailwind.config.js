@@ -34,7 +34,7 @@ module.exports = {
                 footer: "30vh",
             },
             minHeight: {
-                navigation: "15vh",
+                navigation: "85px",
                 hero: "85vh",
                 footer: "30vh",
             },
@@ -45,6 +45,9 @@ module.exports = {
             },
             colors: {
                 "green-neon-light": "#24CA85",
+                'tiffany-10': '#0ABAB5',
+                'tiffany-30': '#C2EFEE',
+                'white-bg': '#E0E0E0'
             },
             fontFamily: {
                 montserrat: ["Montserrat"],

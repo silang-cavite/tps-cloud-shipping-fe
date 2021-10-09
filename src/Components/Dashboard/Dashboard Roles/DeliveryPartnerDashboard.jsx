@@ -1,4 +1,8 @@
-import React from "react"
+// NPM Modules
+import React from "react";
+
+// Moduled Functions
+import Motion from "src/Middleware/MotionVertically";
 
 const DeliveryPartnerDashboard = () => {
     return (
@@ -8,4 +12,7 @@ const DeliveryPartnerDashboard = () => {
     )
 }
 
-export default DeliveryPartnerDashboard
+// Framer Motion Higher Order Component (HOC)
+const FrameDeliveryPartnerDashboard = Motion(DeliveryPartnerDashboard);
+
+export default FrameDeliveryPartnerDashboard;

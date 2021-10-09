@@ -1,18 +1,23 @@
+// NPM Packages
 import React, { useContext } from "react";
-import { ContextAPI } from "src/Middleware/Context";
 import { useHistory } from "react-router-dom";
+
+// Moduled Functions
+import { ContextAPI } from "src/Middleware/Context";
 import NotFoundImage from "src/Assets/NotFound.jpg";
 
 const NotFound = () => {
-    const Auth = useContext(ContextAPI)
-    const history = useHistory();
+    // Component Initial Variables
+    const Auth = useContext(ContextAPI);                                       // Context API Variable from Parent to check current Authorization Status
+    const history = useHistory();                                               // Navigation to react routes
 
+    // As its name suggest
     const returnToHomapage = () => {
         history.push(Auth.auth === false ? "/" : "/dashboard/")
     }
 
     return (
-        <section className="flex justify-center items-center min-h-screen px-20 lg:px-14">
+        <section className="flex justify-center items-center px-20 lg:px-14" style={{ minHeight: Auth.auth === true ? "calc(75vh)" : "100vh" }}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
                 <div className="bg-gray-200 rounded-lg p-10 flex flex-col justify-center">
                     <p className="text-xs font-semibold tracking-wide uppercase">Error 404</p>

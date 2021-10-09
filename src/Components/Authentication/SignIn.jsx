@@ -1,16 +1,21 @@
+// NPM Packages
 import React, { useState, useContext } from "react";
+import { useDispatch } from "react-redux";
+
+// Moduled Functions
+import { signIn } from "src/State/UserInformation/UserData";
 import { axiosAPI } from "src/Middleware/Axios";
 import { notify } from "src/Services/Toaster";
 import { ContextAPI } from "src/Middleware/Context";
-import { useDispatch } from "react-redux";
-import { signIn } from "src/State/UserInformation/UserData";
 
 const SignIn = () => {
-    const dispatch = useDispatch();
-    const Auth = useContext(ContextAPI)
-    const [ username, setUsername ] = useState("client_cloud_shipping");
-    const [ password, setPassword ] = useState("password");
+    // Component Initial Variables
+    const dispatch = useDispatch();                                             // Use Reducer Actions
+    const Auth = useContext(ContextAPI)                                         // Context API Variable from Parent to check current Authorization Status
+    const [ username, setUsername ] = useState("client_cloud_shipping");        // Username input field value
+    const [ password, setPassword ] = useState("password");                     // Password input field value
 
+    // Login Request to be submitted to the API as a request body
     const signInRequest = async (formTarget) => {
         formTarget.preventDefault();
         try {
@@ -20,9 +25,10 @@ const SignIn = () => {
             })
             dispatch(signIn({
                 id: loginResponse.data.status.id,
-                first_name: loginResponse.data.status.first_name,
-                last_name: loginResponse.data.status.last_name,
+                first_name: loginResponse.data.status.first_name.charAt(0).toUpperCase() + loginResponse.data.status.first_name.slice(1),
+                last_name: loginResponse.data.status.last_name.charAt(0).toUpperCase() + loginResponse.data.status.last_name.slice(1),
                 username: loginResponse.data.status.username,
+                user_picture: loginResponse.data.status.user_picture,
                 address: loginResponse.data.status.address,
                 email: loginResponse.data.status.email,
                 phone_number: loginResponse.data.status.phone_number,
@@ -30,7 +36,7 @@ const SignIn = () => {
             }))
             localStorage.setItem("Authorization", loginResponse.data.payload)
             Auth.setAuth(true)
-            notify(`Welcome ${loginResponse.data.status.first_name} ${loginResponse.data.status.last_name}`, "success")  
+            notify(`Welcome ${loginResponse.data.status.first_name.charAt(0).toUpperCase() + loginResponse.data.status.first_name.slice(1)} ${loginResponse.data.status.last_name.charAt(0).toUpperCase() + loginResponse.data.status.last_name.slice(1)}`, "success")  
         } catch (err) {
             err.response ? notify(err.response.data.message, "success") : notify(err.message, "success")  
         }
