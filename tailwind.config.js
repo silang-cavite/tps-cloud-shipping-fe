@@ -45,6 +45,10 @@ module.exports = {
             },
             colors: {
                 "green-neon-light": "#24CA85",
+                "tiffany": "#0ABAB5",
+                "tiffany-light": "#5cdfe5",
+                "dark-gray":"#636363",
+             
             },
             fontFamily: {
                 montserrat: ["Montserrat"],
