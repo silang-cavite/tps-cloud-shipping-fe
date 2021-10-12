@@ -45,6 +45,9 @@ module.exports = {
             },
             colors: {
                 "green-neon-light": "#24CA85",
+                "tiffany": "#0ABAB5",
+                "tiffany-light": "#5cdfe5",
+                "dark-gray":"#636363",
                 'tiffany-10': '#0ABAB5',
                 'tiffany-30': '#C2EFEE',
                 'white-bg': '#E0E0E0'
