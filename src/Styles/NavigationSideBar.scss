@@ -1,0 +1,39 @@
+// .tester {
+//     transition: all .5s ease;
+// }
+// .tester:after {
+//     transition: all .1s ease;
+//     content: '';
+// }
+// .tester:before {
+//     transition: all .1s ease;
+//     content: '';
+// }
+
+.current-navigation{
+    // overflow: auto;
+    // transition: .1s ease;
+    position: relative;
+    &::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        bottom: -50px;
+        width: 50px;
+        height: 50px;
+        background: transparent;
+        border-radius: 50%;
+        box-shadow: 35px -35px 0 10px #C2EFEE;
+    }
+    &::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: -50px;
+        width: 50px;
+        height: 50px;
+        background: transparent;
+        border-radius: 50%;
+        box-shadow: 35px 35px 0 10px #C2EFEE;
+    }
+}

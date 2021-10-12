@@ -1,17 +1,31 @@
+// NPM Packages
 import React from "react";
-import { notify } from "src/Services/Toaster";
+import { useSelector } from "react-redux";
 
-const callHome = () => {
-    notify("This is a test", "success")
-}
+// Moduled Functions
+import Motion from "src/Middleware/MotionVertically";
+
+// Components
+import ClientDashboard from "src/Components/Dashboard/Dashboard Roles/ClientDashboard";
+import DeliveryPartnerDashboard from "src/Components/Dashboard/Dashboard Roles/DeliveryPartnerDashboard";
 
 const DashboardHome = () => {
+    // Component Initial Variables / Redux State
+    const { role } = useSelector((state) => state.user);                        // Logged/Current User's Role
+
     return (
         <div>
-            Home
-            <button onClick={callHome}>Make me a toast</button>
+            {
+                role === "Client" ?
+                    <ClientDashboard />
+                :
+                    <DeliveryPartnerDashboard />
+            }
         </div>
     );
 };
 
-export default DashboardHome;
+// Framer Motion Higher Order Component (HOC)
+const FrameDashboardHome = Motion(DashboardHome);
+
+export default FrameDashboardHome;

@@ -34,7 +34,7 @@ module.exports = {
                 footer: "30vh",
             },
             minHeight: {
-                navigation: "15vh",
+                navigation: "85px",
                 hero: "85vh",
                 footer: "30vh",
             },
@@ -48,11 +48,16 @@ module.exports = {
                 "tiffany": "#0ABAB5",
                 "tiffany-light": "#5cdfe5",
                 "dark-gray":"#636363",
-             
+                'tiffany-10': '#0ABAB5',
+                'tiffany-30': '#C2EFEE',
+                'white-bg': '#E0E0E0'
             },
             fontFamily: {
                 montserrat: ["Montserrat"],
             },
+            boxShadow: {
+                lgabove: '2px -5px 5px 0px rgba(0, 0, 0, 0.1)',
+            }
         },
     },
     variants: {

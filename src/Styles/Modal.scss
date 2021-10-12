@@ -1,0 +1,10 @@
+// Modal Custom Styling
+.ReactModal__Overlay--after-open {
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.ReactModal__Content {
+    background-color: #0ABAB5 !important;
+    border: unset !important;
+}

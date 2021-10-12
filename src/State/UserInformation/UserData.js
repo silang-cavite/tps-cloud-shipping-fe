@@ -1,6 +1,8 @@
+// NPM Module
 import { createSlice } from "@reduxjs/toolkit";
 
 export const userInformation = createSlice({
+    // Reducer States
     name: "userInformation",
     initialState: {
         id: undefined,
@@ -18,12 +20,14 @@ export const userInformation = createSlice({
         phone_number: undefined,
         role: undefined
     },
+    // Reducer Actions
     reducers: {
         signIn: (state, action) => {
             state.id = action.payload.id;
             state.first_name = action.payload.first_name;
             state.last_name = action.payload.last_name;
             state.username = action.payload.username;
+            state.user_picture = action.payload.user_picture;
             state.address = action.payload.address;
             state.email = action.payload.email;
             state.phone_number = action.payload.phone_number;
@@ -48,6 +52,7 @@ export const userInformation = createSlice({
     },
 });
 
+// Exported Reducer Actions to be used for components
 export const { signIn, signOut } = userInformation.actions;
 
 export default userInformation.reducer;

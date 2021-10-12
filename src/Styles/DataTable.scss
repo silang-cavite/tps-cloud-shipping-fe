@@ -1,0 +1,41 @@
+// CUSTOM Main React Datatable
+.data-table-extensions {
+    padding: 0 !important;
+    margin: 0 !important;
+    
+}
+.filter-text {
+    &:focus{
+        outline: none !important;
+        border-color: inherit !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+    }
+}
+.data-table-extensions-filter {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+// CUSTOM React data table subHeader class
+.eZAggp {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+// CUSTOM React data table content class
+.byQPbT{
+    display: unset !important;
+}
+
+// CUSTOM React data table drop down class
+.data-table-extensions-action {
+    z-index: 500 !important;
+}
+
+// Custom Input width
+@media only screen and (max-width: 600px) {
+    .filter-text{
+        max-width: 100px;
+    }
+}
