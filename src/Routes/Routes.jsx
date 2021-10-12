@@ -26,6 +26,7 @@ import DashboardHome from "src/Components/Dashboard/DashboardHome";
 import TransactionHistory from "src/Components/Dashboard/Transaction/TransactionHistory";
 import TransactionID from "src/Components/Dashboard/Transaction/TransactionID";
 import TransactionCreate from "src/Components/Dashboard/Transaction/TransactionCreate";
+import TransactionVerification from "src/Components/Dashboard/Transaction/TransactionVerification";
 import QueueList from "src/Components/Dashboard/Queue/QueueList";
 import TasksList from "src/Components/Dashboard/Tasks/TasksList";
 import DashboardLogout from "src/Components/Dashboard/DashboardLogout";
@@ -51,7 +52,8 @@ const Routes = () => {
                             <ProtectedRoutes path="/dashboard/" auth={Auth.auth} exact component={DashboardHome} role={["Client", "Delivery Partner"]}/>
                             <ProtectedRoutes path="/dashboard/transaction" auth={Auth.auth} exact component={TransactionHistory} role={["Client"]}/>
                             <ProtectedRoutes path="/dashboard/transaction/create" auth={Auth.auth} exact component={TransactionCreate} role={["Client"]}/>
-                            <ProtectedRoutes path="/dashboard/transaction/:transaction_id" auth={Auth.auth} exact component={TransactionID} role={["Client", "Delivery Partner"]}/>
+                            <ProtectedRoutes path="/dashboard/transaction/:transaction_id" auth={Auth.auth} exact component={TransactionID} role={["Client"]}/>
+                            <ProtectedRoutes path="/dashboard/verify" auth={Auth.auth} exact component={TransactionVerification} role={["Delivery Partner"]}/>
                             <ProtectedRoutes path="/dashboard/queue" auth={Auth.auth} exact component={QueueList} role={["Delivery Partner"]}/>
                             <ProtectedRoutes path="/dashboard/tasks" auth={Auth.auth} exact component={TasksList} role={["Delivery Partner"]}/>
                             <ProtectedRoutes path="/dashboard/log-out" auth={Auth.auth} exact component={DashboardLogout} role={["Client", "Delivery Partner"]}/>

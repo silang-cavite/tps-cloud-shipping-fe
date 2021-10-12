@@ -53,8 +53,10 @@ const DashboardLayout = (props) => {
                 }
                 <div className="min-h-screen flex-grow z-50 relative overflow-hidden flex flex-col" style={{ flex: 1 }}>
                     <NavigationHeader/>
-                    <div className="m-6 mb-28 ">
-                        { props.children }
+                    <div className="m-6 mb-28 flex justify-center">
+                        <div className="flex-grow" style={{ maxWidth: "1100px" }}>
+                            { props.children }
+                        </div>
                     </div>
                     <NavigationFooter />
                 </div>

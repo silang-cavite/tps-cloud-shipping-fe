@@ -9,6 +9,7 @@ import Ring from "react-loader-spinner";
 import { useHistory } from "react-router-dom"
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
+import Modal from 'react-modal';
 
 // Moduled Functions
 import Motion from "src/Middleware/MotionVertically";
@@ -21,9 +22,36 @@ const TaskList = () => {
 	const [ hideDirector, setHideDirector ] = useState(true);                   // Hide Data table columns
 	const [ loader, showLoader ] = useState(false);                             // Loader spinner
     const [ transactionHistory, setTransactionHistory ] = useState([]);         // Transaction List received from the API
+    const [ modalValue, setModalValue ] = useState({                            // Transaction Id Modal Value
+        isOpen: false,
+        id: "",
+        data: "",
+        numValue: "",
+        statusValue: "Please select a updated status"
+    });
+
+    const openModal = (parameter) => {
+        setModalValue({
+            id: parameter._id,
+            data: parameter,
+            isOpen: true,
+            numValue: "",
+            statusValue: "Please select a updated status"
+        });
+    }
+  
+    const closeModal = () => {
+        setModalValue({
+            id: "",
+            data: "",
+            isOpen: false,
+            numValue: "",
+            statusValue: ""
+        });
+    }
 
     // Redux User State
-    const { id, username, user_picture } = useSelector((state) => state.user);  // Logged/Current User"s UUID
+    const { id } = useSelector((state) => state.user);  // Logged/Current User"s UUID
 
     // Map GL Configurations
     const layerStyle = {                                                        // Location circles
@@ -83,6 +111,26 @@ const TaskList = () => {
 			},
         },
         {
+            name: "Status",
+            sortable: true,
+			cell: function AcceptTransaction (currentRowData) {
+				return (
+                    <p className="text-xs">
+                        {
+                            Number(currentRowData.status.numStatus) === 8 ?
+                                "Completed"
+                            :
+                                Number(currentRowData.status.numStatus) >= 6 ?
+                                "In Transit"
+                                :
+                                "To Pick-Up"
+                        }
+                    </p>
+				)
+			},
+            maxWidth: isMobile? "50px" : "200px"
+        },
+        {
             name: "Payment",
             selector: "shippingCost",
             sortable: true,
@@ -97,15 +145,21 @@ const TaskList = () => {
 					<button
                         className="btn btn-primary btn-xs"
                         onClick={ () => {
-                            acceptTransactionId(currentRowData._id)
+                            openModal(currentRowData)
                         }}
 					>
                         <p className="text-xs">
                             {
-                                isMobile ?
-                                    "Accept"
+                                currentRowData.status.numStatus >= 6 ?
+                                    isMobile ?
+                                        "View"
+                                    :
+                                        "View Shipping Transaction"
                                 :
-                                    "Accept Shipping Request"
+                                    isMobile ?
+                                        "Update"
+                                    :
+                                        "Update Shipping Status"
                             }
                         </p>
 					</button>
@@ -120,7 +174,6 @@ const TaskList = () => {
     const getTableData = async () => {
         try {
             let tableDataFromAPI = await axiosAPIHeader.get(`/transaction/partner/current-transaction/${id}`)
-            console.log(tableDataFromAPI)
             setTransactionHistory(tableDataFromAPI.data.payload)    // Populating the transaciton state
             showLoader(false);
         } catch (err) {
@@ -128,24 +181,28 @@ const TaskList = () => {
         }
     }
 
-    
-    // Delivery Partner request to accept the Transaction
-    const acceptTransactionId = async (trans_id) => {
+    // Update a Transaction ID status
+    const updateTransactionStatus = async () => {
         try {
-            let postAcceptTransaction = await axiosAPIHeader.patch("/transaction/partner/accept-transaction/", {
-                _id: trans_id,
-                delivery_partner_id: id,
-                delivery_partner_username: username,
-                delivery_partner_picture: user_picture
+            let updateTransaction = await axiosAPIHeader.patch("/transaction/partner/update-transaction/", {
+                _id: modalValue.id,
+                updateText: modalValue.statusValue,
+                numStatus: modalValue.numValue
             });
-            setTransactionHistory((currenTransactionList) => {              
-                return currenTransactionList.filter((currentTransaction) => {   // Reduce the Array once transaction has been accepted
-                    return currentTransaction._id !== trans_id
+            if(Number(modalValue.numValue) === 1) {
+                setTransactionHistory((currenTransactionList) => {              
+                    return currenTransactionList.filter((currentTransaction) => {   // Reduce the Array once transaction has been accepted
+                        return currentTransaction._id !== updateTransaction.data.payload._id
+                    })
                 })
-            })
-            notify(postAcceptTransaction.data.message, "success")
+            }
+            if(Number(modalValue.numValue) === 6) {
+                getTableData()
+            }
+            closeModal()
+            notify(updateTransaction.data.message, "success")
         } catch (err) {
-            err.response ? notify(err.response.data.message, "success") : notify(err.message, "success")  
+            err.response ? notify(err.response.data.message, "success") : notify(err.message, "success");
         }
     }
 
@@ -173,60 +230,6 @@ const TaskList = () => {
     // eslint-disable-next-line
     }, [window.innerWidth, window.innerHeight]);
     
-    
-    const ExpandedComponent = ({ data }) => {
-        return (
-            <div>
-                <div className="card">
-                    <div className="card-body grid-cols-12 gap-5 text-white">
-                        <div className="p-3 col-span-12 md:col-span-4 bg-tiffany-10 rounded-md">
-                            <p className="text-sm font-medium pb-2">User Information</p>
-                            <p className="text-xs pb-1">Email: { data.user_information.user }</p>
-                            <p className="text-xs pb-1">Address: { data.pick_up_address.region }, { data.pick_up_address.province }, { data.pick_up_address.municipality }, { data.pick_up_address.barangay }</p>
-                        </div>
-                        <div className="p-3 col-span-12 md:col-span-4 bg-tiffany-10 rounded-md">
-                            <p className="text-sm font-medium pb-2">Receiver Information</p>
-                            <p className="text-xs pb-1">Full Name: { data.receiver_information.receiver_name }</p>
-                            <p className="text-xs pb-1">Phone Number: 0{ data.receiver_information.receiver_phone_number }</p>
-                            <p className="text-xs pb-1">Email Address: { data.receiver_information.receiver_email }</p>
-                            <p className="text-xs pb-1">Address: { data.target_address.region }, { data.target_address.province }, { data.target_address.municipality }, { data.target_address.barangay }</p>
-                        </div>
-                        <div className="p-3 col-span-12 md:col-span-4 bg-tiffany-10 rounded-md">
-                            <p className="text-sm font-medium pb-2">Extended Information </p>
-                            <p className="text-xs pb-1"> Category: { data.category } </p>
-                            <p className="text-xs pb-1"> Note: { data.notes } </p>
-                            <p className="text-xs pb-1"> Payment: { data.shippingCost } </p>
-                            <p className="text-xs pb-1"> Listed at: { data.createdAt } </p>
-                        </div>
-                        <div className="col-span-12 bg-tiffany-10 rounded-md p-3">
-                            <p className="text-sm font-medium pb-2"> Products </p>
-                            <div className="grid xs:grid-cols-1 md:grid-cols-3">
-                                {
-                                    data.products.map((currentProduct, productkey) => {
-                                        return (
-                                            <div key={productkey} className="pb-3 grid grid-cols-12 gap-2">
-                                                <div className="bg-white rounded-md flex justify-center items-center col-span-2">
-                                                    <p className="text-xs pb-2 text-black"> { productkey } </p>
-                                                </div>
-                                                <div className="col-span-10">
-                                                    <p className="text-xs pb-2"> Product: {currentProduct.product_name} </p>
-                                                    <p className="text-xs pb-2"> Weight: {currentProduct.product_weight} </p>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* <pre>
-                    {JSON.stringify(data, null, 2)}                              // Print a JSON with styling
-                </pre> */}
-            </div>
-        )
-    };
-
     return (
         <div>
             {
@@ -241,6 +244,123 @@ const TaskList = () => {
                 </div>
                 :
                 <div class="grid">
+                    <Modal
+                        isOpen={modalValue.isOpen}
+                        onRequestClose={closeModal}
+                        style={{
+                            top: '50%',
+                            left: '50%',
+                            right: 'auto',
+                            bottom: 'auto',
+                            marginRight: '-50%',
+                            transform: 'translate(-50%, -50%)'
+                        }}
+                        contentLabel="Example Modal"
+                        id="modalIndex"
+                    >
+                        {
+                            modalValue.data === "" ?
+                            ""
+                            :
+                            <div className="card">
+                                <div className="card-body grid-cols-12 gap-5 text-white">
+                                    <div className="p-3 col-span-12 md:col-span-4 bg-tiffany-10 rounded-md">
+                                        <p className="text-sm font-medium pb-2">User Information</p>
+                                        <p className="text-xs pb-1">Email: { modalValue.data.user_information.user }</p>
+                                        <p className="text-xs pb-1">Address: { modalValue.data.pick_up_address.region }, { modalValue.data.pick_up_address.province }, { modalValue.data.pick_up_address.municipality }, { modalValue.data.pick_up_address.barangay }</p>
+                                    </div>
+                                    <div className="p-3 col-span-12 md:col-span-4 bg-tiffany-10 rounded-md">
+                                        <p className="text-sm font-medium pb-2">Receiver Information</p>
+                                        <p className="text-xs pb-1">Full Name: { modalValue.data.receiver_information.receiver_name }</p>
+                                        <p className="text-xs pb-1">Phone Number: 0{ modalValue.data.receiver_information.receiver_phone_number }</p>
+                                        <p className="text-xs pb-1">Email Address: { modalValue.data.receiver_information.receiver_email }</p>
+                                        <p className="text-xs pb-1">Address: { modalValue.data.target_address.region }, { modalValue.data.target_address.province }, { modalValue.data.target_address.municipality }, { modalValue.data.target_address.barangay }</p>
+                                    </div>
+                                    <div className="p-3 col-span-12 md:col-span-4 bg-tiffany-10 rounded-md">
+                                        <p className="text-sm font-medium pb-2">Extended Information </p>
+                                        <p className="text-xs pb-1"> Category: { modalValue.data.category } </p>
+                                        <p className="text-xs pb-1"> Note: { modalValue.data.notes } </p>
+                                        <p className="text-xs pb-1"> Payment: { modalValue.data.shippingCost } </p>
+                                        <p className="text-xs pb-1"> Listed at: { modalValue.data.createdAt } </p>
+                                    </div>
+                                    <div className="col-span-12 bg-tiffany-10 rounded-md p-3">
+                                        <p className="text-sm font-medium pb-2"> Products </p>
+                                        <div className="grid xs:grid-cols-1 md:grid-cols-3">
+                                            {
+                                                modalValue.data.products.map((currentProduct, productkey) => {
+                                                    return (
+                                                        <div key={productkey} className="pb-3 grid grid-cols-12 gap-2">
+                                                            <div className="bg-white rounded-md flex justify-center items-center col-span-2">
+                                                                <p className="text-xs pb-2 text-black"> { productkey } </p>
+                                                            </div>
+                                                            <div className="col-span-10">
+                                                                <p className="text-xs pb-2"> Product: {currentProduct.product_name} </p>
+                                                                <p className="text-xs pb-2"> Weight: {currentProduct.product_weight} </p>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className="col-span-12 bg-tiffany-10 rounded-md p-3 text-black">
+                                        <div className="py-2 text-white">
+                                            <span className="text-sm font-medium pb-2"> Transaction Status: </span> 
+                                            <p className="text-xs pb-1"> { modalValue.data.status.updateText } </p>
+                                        </div>
+                                        {
+                                            modalValue.data.status.numStatus <= 5 ?
+                                            <div>
+                                                <select 
+                                                    className="form-select"
+                                                    defaultValue="Please updated the status"
+                                                    defaultChecked="Please updated the status"
+                                                    onChange={(e) => {
+                                                        // Get option attribute data
+                                                        let index = e.target.selectedIndex;
+                                                        let optionElement = e.target.childNodes[index]
+                                                        setModalValue((currentValue) => {
+                                                            return {
+                                                                ...currentValue,
+                                                                numValue: optionElement.getAttribute('contextData'),
+                                                                statusValue: e.target.value
+                                                            }
+                                                        })
+                                                    }}
+                                                >
+                                                    <option defaultChecked disabled>Please updated the status</option>
+                                                    {/* Continue */}
+                                                    {
+                                                        [
+                                                            {
+                                                                message: "Cancel Shipping Transaction and Revert back to Queue List!",
+                                                                value: 1
+                                                            },
+                                                            {
+                                                                message: "Shipping request has been accepted by the Delivery Partner and will be picking up the parcel!",
+                                                                value: 2
+                                                            },
+                                                            {
+                                                                message: "Shipping request is now out for delivery! Please provide the QR to the Receiver!",
+                                                                value: 6
+                                                            },
+                                                        ].map((currentRole, roleKey)=>{
+                                                            return currentRole.message !== modalValue.data.status.updateText && <option key={roleKey} contextData={currentRole.value}> { currentRole.message } </option>
+                                                        })
+                                                    }
+                                                </select>
+                                                <button className="btn btn-primary btn-xs mt-2" onClick={() => {
+                                                    updateTransactionStatus()
+                                                }}> Update </button>
+                                            </div>
+                                            :
+                                            ""
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </Modal>
                     <div className="overflow-y-auto px-5 py-3 bg-white rounded-md mb-5">
                         <DataTableExtensions columns={columns} data={transactionHistory} exportHeaders={true}>
                             <DataTable
@@ -250,8 +370,6 @@ const TaskList = () => {
                                 striped={true}
                                 highlightOnHover={true}
                                 pointerOnHover={true}
-                                expandableRows
-                                expandableRowsComponent={ExpandedComponent}
                             />
                         </DataTableExtensions >
                         <ReactTooltip />

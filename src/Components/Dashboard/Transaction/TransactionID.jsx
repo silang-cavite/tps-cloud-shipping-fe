@@ -4,6 +4,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Ring from "react-loader-spinner";
 import QRCode from "qrcode.react";
+import { encryptQueryParams } from "query-string-hash";
 
 // Moduled Functions
 import Motion from "src/Middleware/MotionVertically";
@@ -19,6 +20,7 @@ const TransactionID = () => {
     const { transaction_id } = useParams();                                     // Route params which is /:id
     const [ transactionData, setTransactionData ] = useState({});               // Transaction state to received the API data
     const [ loading, setLoading ] = useState(true);                             // Loader for Framer
+    // eslint-disable-next-line
     const [ mapLocation, setMapLocation ] = useState({                          // Lang and Long of Addresses for Map
         pickup: {
             latitude: undefined,
@@ -34,6 +36,8 @@ const TransactionID = () => {
         height: 40,
         width: 60
     };
+    const queryParamsToBeHashed = `id=${transaction_id}`;                          // Query Parameter
+    const hashParamsForQR = encryptQueryParams(queryParamsToBeHashed, process.env.REACT_APP_QUERY_KEY);
 
     // Redux State
     const { id } = useSelector((state) => state.user);                          // Logged/Current User's UUID
@@ -110,6 +114,10 @@ const TransactionID = () => {
     // eslint-disable-next-line
     }, []);
 
+    useEffect(() => {
+        console.log(transactionData)
+    }, [transactionData])
+
     return (
         <div>
             {
@@ -123,49 +131,79 @@ const TransactionID = () => {
                         />
                     </div>
                 :
-                    <div>
-                        <p> { transactionData.category } </p>
-                        <p> { transactionData.createdAt } </p>
-                        <p> { transactionData.notes } </p>
-                        <p> { transactionData.transaction_number } </p>
-                        <p> { transactionData.status.updateText } </p>
-                        <p> { transactionData.receiver_information.receiver_email } </p>
-                        <p> { transactionData.receiver_information.receiver_name } </p>
-                        <p> 0{ transactionData.receiver_information.receiver_phone_number } </p>
-                        <p> { transactionData.pick_up_address.barangay } </p>
-                        <p> { transactionData.pick_up_address.municipality } </p>
-                        <p> { transactionData.pick_up_address.province } </p>
-                        <p> { transactionData.pick_up_address.region } </p>
-                        <p> { transactionData.target_address.barangay } </p>
-                        <p> { transactionData.target_address.municipality } </p>
-                        <p> { transactionData.target_address.province } </p>
-                        <p> { transactionData.target_address.region } </p>
-                        { 
-                            transactionData.products.map((currentData) => {
-                                return (
-                                    <>
-                                        <p>
-                                            { currentData.product_name } { currentData.product_weight }
-                                        </p>
-                                    </>
-                                )
-                            }) 
-                        }
-                        {
-                            transactionData.status.numStatus !== 1 && transactionData.delivery_information  ?
-                                <div>
-                                    <p>{ transactionData.delivery_information.delivery_partner }</p>
-                                    <p>{ transactionData.delivery_information.delivery_partner_id }</p>
-                                    <p>{ transactionData.delivery_information.delivery_partner_picture }</p>
+                    <div className="card">
+                        <div className="card-body grid-cols-12 gap-5 text-white">
+                            <div className="p-3 col-span-12 md:col-span-6 bg-tiffany-10 rounded-md">
+                                <p className="text-sm font-medium pb-2">Receiver Information</p>
+                                <p className="text-xs pb-1">Full Name: { transactionData.receiver_information.receiver_name }</p>
+                                <p className="text-xs pb-1">Phone Number: 0{ transactionData.receiver_information.receiver_phone_number }</p>
+                                <p className="text-xs pb-1">Email Address: { transactionData.receiver_information.receiver_email }</p>
+                                <p className="text-xs pb-1">Address: { transactionData.target_address.region }, { transactionData.target_address.province }, { transactionData.target_address.municipality }, { transactionData.target_address.barangay }</p>
+                            </div>
+                            <div className="p-3 col-span-12 md:col-span-6 bg-tiffany-10 rounded-md">
+                                <p className="text-sm font-medium pb-2">Extended Information </p>
+                                <p className="text-xs pb-1"> Category: { transactionData.category } </p>
+                                <p className="text-xs pb-1"> Note: { transactionData.notes } </p>
+                                <p className="text-xs pb-1"> Payment: { transactionData.shippingCost } </p>
+                                <p className="text-xs pb-1"> Listed at: { transactionData.createdAt } </p>
+                            </div>
+                            <div className="col-span-12 bg-tiffany-10 rounded-md p-3">
+                                <p className="text-sm font-medium pb-2"> Products </p>
+                                <div className="grid xs:grid-cols-1 md:grid-cols-3">
+                                    {
+                                        transactionData.products.map((currentProduct, productkey) => {
+                                            return (
+                                                <div key={productkey} className="pb-3 grid grid-cols-12 gap-2">
+                                                    <div className="bg-white rounded-md flex justify-center items-center col-span-2">
+                                                        <p className="text-xs pb-2 text-black"> { productkey } </p>
+                                                    </div>
+                                                    <div className="col-span-10">
+                                                        <p className="text-xs pb-2"> Product: {currentProduct.product_name} </p>
+                                                        <p className="text-xs pb-2"> Weight: {currentProduct.product_weight} </p>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
                                 </div>
-                            :
+                            </div>
+                            <div className="col-span-12 bg-tiffany-10 rounded-md p-3 text-black">
+                                <div className="py-2 text-white">
+                                    <span className="text-sm font-medium pb-2"> Transaction Status: </span> 
+                                    <p className="text-xs pb-1"> { transactionData.status.updateText } </p>
+                                </div>
+                            </div>
+                            {
+                                transactionData.delivery_information ?
+                                    Number(transactionData.status.numStatus) !== 8 ?
+                                        <div className="col-span-12 sm:col-span-5 lg:col-span-4 bg-tiffany-10 rounded-md text-black flex justify-center py-3">
+                                            <QRCode value={`https://cloud-shipping.netlify.app/dashboard/verify?hash=${hashParamsForQR}`} imageSettings={imageSettings}/>
+                                        </div>
+                                    :
+                                        ""
+                                :
                                 ""
-                        }
-                        <p> { mapLocation.pickup.latitude } </p>
-                        <p> { mapLocation.pickup.longitude } </p>
-                        <p> { mapLocation.target.latitude } </p>
-                        <p> { mapLocation.target.latitude } </p>
-                        <QRCode value="https://cloud-shipping.netlify.app/ketchup" imageSettings={imageSettings}/>
+                            }
+                            {
+                                transactionData.delivery_information ?
+                                <div className={`px-3 ${  Number(transactionData.status.numStatus) !== 8 ?  'col-span-12 sm:col-span-7 lg:col-span-8' : 'col-span-12'} bg-tiffany-10 rounded-md flex flex-col`}>
+                                    <div className="py-3">
+                                        <span className="text-sm font-medium pb-2"> Delivery Partner: </span> 
+                                    </div>
+                                    <div className="flex items-center gap-5 pb-3 flex-grow">
+                                        <div className="avatar">
+                                            <img src={transactionData.delivery_information.delivery_partner_picture} alt="" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs pb-1">Delivery Partner ID: { transactionData.delivery_information.delivery_partner_id }</p>
+                                            <p className="text-xs pb-1">Full Name: { transactionData.delivery_information.delivery_partner }</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                : 
+                                ""
+                            }
+                        </div>
                     </div>
             }
         </div>

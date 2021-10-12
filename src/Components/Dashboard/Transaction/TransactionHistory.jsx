@@ -34,7 +34,7 @@ const TransactionHistory = () => {
         }
     };
     const [viewport, setViewport] = useState({                                  // Map GL component attributes
-        width: 400,
+        width: "100%",
         height: 400,
         latitude: 12.0000,
         longitude: 122.0000,
@@ -73,9 +73,9 @@ const TransactionHistory = () => {
         },
         {
             name: 'Address',
-            selector: row => `${row.target_address.province.charAt(0).toUpperCase() + row.target_address.province.slice(1).toLowerCase()}, ${ row.target_address.municipality.charAt(0).toUpperCase() + row.target_address.municipality.slice(1).toLowerCase()}, ${ row.target_address.barangay.charAt(0).toUpperCase() + row.target_address.barangay.slice(1).toLowerCase() }`,
+            // selector: row => `${row.target_address.province.charAt(0).toUpperCase() + row.target_address.province.slice(1).toLowerCase()}, ${ row.target_address.municipality.charAt(0).toUpperCase() + row.target_address.municipality.slice(1).toLowerCase()}, ${ row.target_address.barangay.charAt(0).toUpperCase() + row.target_address.barangay.slice(1).toLowerCase() }`,
             sortable: true,
-			omit: hideDirector
+			omit: hideDirector,
         },
         {
             name: 'Status',
@@ -116,18 +116,6 @@ const TransactionHistory = () => {
 			omit: hideDirector
         },
         {
-            name: 'Address',
-            selector: "target_address.municipality",
-            sortable: true,
-			omit: hideDirector
-        },
-        {
-            name: 'Address',
-            selector: "target_address.barangay",
-            sortable: true,
-			omit: hideDirector
-        },
-        {
             name: 'Status',
             selector: 'status.updateText',
             sortable: true
@@ -155,6 +143,7 @@ const TransactionHistory = () => {
                 "year": 2021
             })
             setTransactionHistory(tableDataFromAPI.data.transaction_history)    // Populating the transaciton state
+            console.log(tableDataFromAPI.data.transaction_history)
             showLoader(false);
         } catch (err) {
             history.push("/dashboard/")
@@ -200,7 +189,7 @@ const TransactionHistory = () => {
                 </div>
                 :
                 <div class="grid ">
-                    <div className="overflow-y-auto">
+                    <div className="overflow-y-auto px-5 py-3 bg-white rounded-md mb-5">
                         <DataTableExtensions columns={columnsExcel} data={transactionHistory}>
                             <DataTable
                                 columns={columns}
@@ -216,18 +205,64 @@ const TransactionHistory = () => {
                         </DataTableExtensions >
                         <ReactTooltip />
                     </div>
-                    <div className="overflow-y-auto">
-                        <ReactMapGL
-                            mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_GL_KEY}
-                            {...viewport}
-                            onViewportChange={nextViewport => setViewport(nextViewport)}
-                            className="rounded-md"
-                            mapStyle={process.env.REACT_APP_MAP_STYLE}
-                        >
-                            <Source id="my-data" type="geojson" data={geojson}>
-                                <Layer {...layerStyle} />
-                            </Source>
-                        </ReactMapGL>
+                    <div className="overflow-y-auto px-5 py-3 bg-white rounded-md grid xs:grid-cols-1 md:grid-cols-12 gap-5">
+                        <div className="flex justify-center items-center col-span-6 min-h-full">
+                            <ReactMapGL
+                                mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_GL_KEY}
+                                {...viewport}
+                                onViewportChange={nextViewport => setViewport(nextViewport)}
+                                className="rounded-md"
+                                mapStyle={process.env.REACT_APP_MAP_STYLE}
+                            >
+                                <Source id="my-data" type="geojson" data={geojson}>
+                                    <Layer {...layerStyle} />
+                                </Source>
+                            </ReactMapGL>
+                        </div>
+                        <div className="bg-tiffany-10 rounded-md col-span-6 p-5">
+                            {
+                                transactionHistory.length !== 0 ?
+                                [
+                                    {
+                                        category: "Transaction Region Sites",
+                                        field: "region"
+                                    },
+                                    {
+                                        category: "Transaction Province Sites",
+                                        field: "province"
+                                    },
+                                ].map((currentCategory, categoryKey) => {
+                                    return (
+                                        <div key={categoryKey}>
+                                            <div class="card-header mx-0 px-0">
+                                                <p className="font-medium">{currentCategory.category}</p>
+                                            </div>
+                                            <div className="py-2">
+                                                {
+                                                    transactionHistory.map((currentTransaction) => {  
+                                                        return `${currentTransaction.target_address[`${currentCategory.field}`].charAt(0).toUpperCase() + currentTransaction.target_address[`${currentCategory.field}`].slice(1).toLowerCase()}`
+                                                    }).filter( (value, index, array) => { 
+                                                        return array.indexOf(value) === index;              // Remove duplicates
+                                                    }).map((newTransactionMap, transactioKey) => {
+                                                        return (
+                                                        <p key={transactioKey} className="py-1">
+                                                                {transactioKey+1}. {newTransactionMap}
+                                                            </p>
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                                : 
+                                <div>
+                                    <div class="card-header mx-0 px-0">
+                                        <p className="font-medium">No data available, please accept Delivery Transacitons!</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             }

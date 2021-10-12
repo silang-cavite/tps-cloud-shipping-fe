@@ -15,12 +15,14 @@ import { signIn } from "src/State/UserInformation/UserData";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "react-data-table-component-extensions/dist/index.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "src/Styles/App.scss";
 import "src/Styles/Tailwind.scss";
 import "src/Styles/SlidingPanel.scss";
 import "src/Styles/NavigationSideBar.scss";
 import "src/Styles/DataTable.scss";
 import "src/Styles/SwiperPagination.scss";
+import "src/Styles/Modal.scss";
 
 const Apps = () => {
     // Component Initial Variables

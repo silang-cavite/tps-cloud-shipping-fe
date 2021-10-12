@@ -32,3 +32,10 @@
 .data-table-extensions-action {
     z-index: 500 !important;
 }
+
+// Custom Input width
+@media only screen and (max-width: 600px) {
+    .filter-text{
+        max-width: 100px;
+    }
+}

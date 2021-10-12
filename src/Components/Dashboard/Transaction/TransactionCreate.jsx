@@ -113,7 +113,7 @@ const TransactionCreate = () => {
             notify(postNewTransaction.data.message, "success")
             history.push(`/dashboard/transaction/${postNewTransaction.data.payload._id}`)           // Move to Transaction Page
         } catch (err) {
-            err.response ? notify(err.response.data.message, "error") : notify(err.message, "error")  
+            err.response ? notify(err.response.data.message, "success") : notify(err.message, "success")  
         }
     }
     
@@ -206,10 +206,12 @@ const TransactionCreate = () => {
     return (
         <div>
             <form 
+                className="bg-tiffany-10 rounded-md text-white p-4"
                 onSubmit={(e) => {
                     handleSubmitFormData(e)
                 }}
             >
+                <section className="grid grid-cols-12 gap-5">
                 {
                     Object.values({
                         ...formData.receiver_information,
@@ -217,13 +219,14 @@ const TransactionCreate = () => {
                         notes: ["Notes for Delivery Parnter", "receiversDeliveryPartnerText", "text", ""],
                     }).map((currentReceiverInformation, informationKey) => {
                         return (
-                            <div key={informationKey}>
-                                <label htmlFor={currentReceiverInformation[1]}>
+                            <div key={informationKey} className="col-span-12 md:col-span-6">
+                                <label className="text-md font-medium" htmlFor={currentReceiverInformation[1]}>
                                     { currentReceiverInformation[0] }
                                 </label>
                                 {
                                     informationKey === 3 ? 
                                     <select
+                                        className="form-select"
                                         onChange={(e) => {
                                             setFormData((currentFormData) => {
                                                 return {
@@ -252,7 +255,8 @@ const TransactionCreate = () => {
                                         }
                                     </select>
                                     :
-                                    <input 
+                                    <input
+                                        className="form-input"
                                         id={currentReceiverInformation[1]}
                                         type={currentReceiverInformation[2]}
                                         onChange={(e)=> {
@@ -284,9 +288,10 @@ const TransactionCreate = () => {
                         )
                     })
                 }
+                </section>
                 <section>
                     <div>
-                        <label className="block text-sm mb-1" >Region</label>
+                        <label  className="block text-md font-medium mb-1" >Region</label>
                         <select className="form-select"
                         defaultValue="Select your option" 
                         size={state.regionState} 
@@ -329,7 +334,7 @@ const TransactionCreate = () => {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm mb-1" >Provinces</label>
+                        <label className="block text-md font-medium mb-1" >Provinces</label>
                         <select className="form-select"
                         value = { addressLocation.selectedProvince }
                         size={state.provinceState} 
@@ -379,7 +384,7 @@ const TransactionCreate = () => {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm mb-1" >Municipality</label>
+                        <label className="block text-md font-medium mb-1" >Municipality</label>
                         <select className="form-select"
                         value = { addressLocation.selectedMunicipality }
                         size={state.municipalitState} 
@@ -428,7 +433,7 @@ const TransactionCreate = () => {
                         </select>
                     </div>
                     <div>
-                        <label className="block text-sm mb-1" >Barangay</label>
+                        <label className="block text-md font-medium mb-1" >Barangay</label>
                         <select className="form-select"
                         value = { addressLocation.selectedBarangay }
                         size={state.barangayState} 
@@ -476,87 +481,113 @@ const TransactionCreate = () => {
                         </select>
                     </div>
                 </section>
-                <div>
-                    <button 
-                        // Prevent Form to be submitted
-                        type="button"
-                        onClick={() => {
-                            setFormData((currentFormData) => {
-                                return {
-                                    ...currentFormData,
-                                    products: [
-                                        ...currentFormData.products,
-                                        {
-                                            product_name: "",
-                                            product_weight: ""
-                                        }
-                                    ]
-                                }
-                            })
+                <div className="bg-tiffany-10 my-4 rounded-md ">
+                    <div className="flex justify-between p-4">
+                        <p className="block text-md font-medium mb-1 text-white">
+                            Product List
+                        </p>
+                        <button 
                             // Prevent Form to be submitted
-                            return false
-                        }}
-                    >
-                        Add Product Listing
-                    </button>
+                            type="button"
+                            className="text-md font-medium btn btn-primary btn-sm"
+                            onClick={() => {
+                                setFormData((currentFormData) => {
+                                    return {
+                                        ...currentFormData,
+                                        products: [
+                                            ...currentFormData.products,
+                                            {
+                                                product_name: "",
+                                                product_weight: ""
+                                            }
+                                        ]
+                                    }
+                                })
+                                // Prevent Form to be submitted
+                                return false
+                            }}
+                        >
+                            Add Product Listing
+                        </button>
+                    </div>
                     {
-                        formData.products.map((currentProduct, productKey) => {
-                            return (
-                                <div key={productKey} className="flex">
-                                    <input 
-                                        type="text"
-                                        value={formData.products[productKey].product_name}
-                                        placeholder="Add Product Description"
-                                        onChange={(e) => {
-                                            return setFormData((currentData) => {
-                                                currentData.products[productKey] = {
-                                                    product_name: e.target.value,
-                                                    product_weight: formData.products[productKey].product_weight
-                                                }
-                                                return {
-                                                    ...currentData
-                                                }
-                                            })
-                                        }}
-                                    />
-                                    <input 
-                                        type="text"
-                                        value={formData.products[productKey].product_weight}
-                                        placeholder="Add Weight in Kilograms"
-                                        onChange={(e) => {
-                                            return setFormData((currentData) => {
-                                                currentData.products[productKey] = {
-                                                    product_name: formData.products[productKey].product_name,
-                                                    product_weight: e.target.value
-                                                }
-                                                return {
-                                                    ...currentData
-                                                }
-                                            })
-                                        }}
-                                    />
-                                    <button 
-                                        // Prevent Form to be submitted
-                                        type="button"
-                                        onClick={() => {
-                                            setFormData((currentFormData) => {
-                                                currentFormData.products.splice(productKey, 1)
-                                                return {
-                                                    ...currentFormData
-                                                }
-                                            })
-                                            // Prevent Form to be submitted
-                                            return false
-                                        }}
-                                    >
-                                        Remove Product
-                                    </button>
-                                </div>
-                            )
-                        })
+                        formData.products.length ?
+                        <div className="px-4 grid grid-cols-12 text-white">
+                            <p className="col-span-5 text-sm font-medium">Product Name</p>
+                            <p className="col-span-5 text-sm font-medium ">Product Name</p>
+                        </div>
+                        :
+                        ""
                     }
+                    <div className="p-4">
+                        {
+                            formData.products.map((currentProduct, productKey) => {
+                                return (
+                                    <div key={productKey} className="grid grid-cols-12 gap-5 py-2">
+                                        <div className="col-span-12 md:col-span-5">
+                                            <input 
+                                                className="form-input"
+                                                type="text"
+                                                value={formData.products[productKey].product_name}
+                                                placeholder="Add Product Description"
+                                                onChange={(e) => {
+                                                    return setFormData((currentData) => {
+                                                        currentData.products[productKey] = {
+                                                            product_name: e.target.value,
+                                                            product_weight: formData.products[productKey].product_weight
+                                                        }
+                                                        return {
+                                                            ...currentData
+                                                        }
+                                                    })
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="col-span-12 md:col-span-5">
+                                            <input 
+                                                className="form-input"
+                                                type="text"
+                                                value={formData.products[productKey].product_weight}
+                                                placeholder="Add Weight in Kilograms"
+                                                onChange={(e) => {
+                                                    return setFormData((currentData) => {
+                                                        currentData.products[productKey] = {
+                                                            product_name: formData.products[productKey].product_name,
+                                                            product_weight: e.target.value
+                                                        }
+                                                        return {
+                                                            ...currentData
+                                                        }
+                                                    })
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="col-span-12 md:col-span-2 flex justify-center">
+                                            <button 
+                                                // Prevent Form to be submitted
+                                                type="button"
+                                                className="btn btn-error btn-sm"
+                                                onClick={() => {
+                                                    setFormData((currentFormData) => {
+                                                        currentFormData.products.splice(productKey, 1)
+                                                        return {
+                                                            ...currentFormData
+                                                        }
+                                                    })
+                                                    // Prevent Form to be submitted
+                                                    return false
+                                                }}
+                                            >
+                                                Remove Product
+                                            </button>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
-                <button type="submit">test</button>
+                <button type="submit" className="btn btn-primary btn-sm"> Create Transaction</button>
             </form>
         </div>
     )

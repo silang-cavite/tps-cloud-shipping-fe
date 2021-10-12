@@ -1,5 +1,5 @@
 // NPM Packages
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
@@ -13,9 +13,11 @@ import SidebarItems from "src/Routes/Dashboard/SidebarItems";
 // Assets
 import backgroundImage from "src/Assets/sidebar-background.jpg";
 import logoImage from "src/Assets/Desktop - 1.png";
+import { ContextAPI } from "src/Middleware/Context";
 
 const NavigationSideBar = () => {
     // Component Initial Variables
+    const Auth = useContext(ContextAPI)
     const location = useLocation();                                                 // Router Location 
     const [ loaded, setLoaded ] = useState(true);                                   // Loader for Framer to set the trigger animation only once
     const { role } = useSelector((state) => state.user);                            // Logged/Current User's UUID
@@ -28,6 +30,7 @@ const NavigationSideBar = () => {
         if(location.pathname !== "/dashboard/"){
             setLoaded(false)
         }
+        console.log(Auth)
     // eslint-disable-next-line
     }, [location.pathname])
 
@@ -44,7 +47,9 @@ const NavigationSideBar = () => {
                     });
                     return checkIfRoleExists ? 
                         (
-                            <Link to={item.route} key={index} className={`${item.class} ml-5 my-1 relative`}>
+                            <Link to={item.route} key={index} className={`${item.class} ml-5 my-1 relative`} onClick={()=>{
+                                Auth.setSlidingPanel(false)
+                            }}>
                                 <NavLink activeClassName="bg-tiffany-30 current-navigation text-black" to={item.route} exact key={item.name} className="flex py-2 rounded-full tester">
                                     <p className="mx-5"> { item.icon } </p>
                                     <NavLink activeClassName="font-semibold" to={item.route} exact> { item.name } </NavLink>
